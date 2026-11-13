@@ -1,0 +1,15 @@
+[package]
+name = "ldb_pack"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ldb L0 layer crate: ldb_pack"
+
+[dependencies]
+ldb_type = { version = "0.1.0", path = "../ldb_type" }
+static_assertions.workspace = true
+
+[[bench]]
+name = "pack_bench"
+harness = false

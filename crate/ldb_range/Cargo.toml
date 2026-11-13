@@ -1,0 +1,16 @@
+[package]
+name = "ldb_range"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ldb L0 layer crate: ldb_range"
+
+[dependencies]
+ldb_epoch = { version = "0.1.0", path = "../ldb_epoch" }
+fastrand.workspace = true
+parking_lot.workspace = true
+
+[[bench]]
+name = "range_lock_bench"
+harness = false

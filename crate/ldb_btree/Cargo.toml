@@ -1,0 +1,43 @@
+[package]
+name = "ldb_btree"
+description = "ldb L4 layer crate: ldb_btree"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies]
+gxhash.workspace = true
+ldb_buf = { version = "0.1.0", path = "../ldb_buf" }
+
+[dependencies.ldb_node]
+version = "0.1.0"
+path = "../ldb_node"
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[dependencies.parking_lot]
+workspace = true
+
+[dependencies.thiserror]
+workspace = true
+
+[dev-dependencies]
+ldb_free = { path = "../ldb_free" }
+ldb_io = { path = "../ldb_io" }
+ldb_space = { path = "../ldb_space" }
+
+[dev-dependencies.compio]
+path = "../../../../kv/compio/compio"
+features = [ "fs", "time", "macros" ]
+version = "0.20.0-beta.1"

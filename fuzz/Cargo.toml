@@ -1,0 +1,73 @@
+[workspace]
+members = ["."]
+
+[package]
+name = "ldb-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+arbitrary = { version = "1", features = ["derive"] }
+compio = { path = "../../../kv/compio/compio", features = ["runtime", "macros"] }
+futures-lite = "2"
+
+[dependencies.ldb_type]
+path = "../crate/ldb_type"
+[dependencies.ldb_codec]
+path = "../crate/ldb_codec"
+[dependencies.ldb_node]
+path = "../crate/ldb_node"
+[dependencies.ldb_btree]
+path = "../crate/ldb_btree"
+[dependencies.ldb_space]
+path = "../crate/ldb_space"
+[dependencies.ldb_gc]
+path = "../crate/ldb_gc"
+[dependencies.ldb_txn]
+path = "../crate/ldb_txn"
+[dependencies.ldb_wal]
+path = "../crate/ldb_wal"
+[dependencies.ldb_recovery]
+path = "../crate/ldb_recovery"
+[dependencies.ldb_io]
+path = "../crate/ldb_io"
+
+[[bin]]
+name = "fuzz_btree_model"
+path = "fuzz_targets/fuzz_btree_model.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_codec_pack"
+path = "fuzz_targets/fuzz_codec_pack.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_space_gc_sim"
+path = "fuzz_targets/fuzz_space_gc_sim.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_mvcc_si"
+path = "fuzz_targets/fuzz_mvcc_si.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_wal_recovery"
+path = "fuzz_targets/fuzz_wal_recovery.rs"
+test = false
+doc = false
+bench = false

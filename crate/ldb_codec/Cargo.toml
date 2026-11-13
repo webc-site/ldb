@@ -1,0 +1,24 @@
+[package]
+name = "ldb_codec"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ldb L2 layer crate: ldb_codec"
+
+[dependencies]
+crc32fast.workspace = true
+ldb_pack = { version = "0.1.0", path = "../ldb_pack" }
+ldb_type = { version = "0.1.0", path = "../ldb_type" }
+# 磁盘帧格式锁定：level-1 字节输出与 mzstd 版本绑定（tests 的 19B/2523B 字面量）。
+# 精确钉死 0.2.12；升级必须重跑 C zstd 1.5.7 双向对拍并更新帧字面量。
+mzstd = "=0.2.12"
+sha2.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+fastrand.workspace = true
+
+[[bench]]
+name = "codec_bench"
+harness = false

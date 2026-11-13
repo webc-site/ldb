@@ -1,0 +1,68 @@
+[package]
+name = "ldb_wal"
+description = "ldb L3 layer crate: ldb_wal"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies]
+roaring.workspace = true
+
+[dependencies.compio]
+version = "0.20.0-beta.1"
+path = "../../../../kv/compio/compio"
+
+[dependencies.crc32fast]
+workspace = true
+
+[dependencies.crossfire]
+workspace = true
+
+[dependencies.futures-lite]
+workspace = true
+
+[dependencies.gxhash]
+workspace = true
+
+[dependencies.ldb_io]
+version = "0.1.0"
+path = "../ldb_io"
+
+[dependencies.ldb_page]
+version = "0.1.0"
+path = "../ldb_page"
+
+[dependencies.ldb_sync]
+version = "0.1.0"
+path = "../ldb_sync"
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[dependencies.parking_lot]
+workspace = true
+
+[dependencies.thiserror]
+workspace = true
+
+[dev-dependencies]
+criterion = "0.8.2"
+
+[dev-dependencies.compio]
+path = "../../../../kv/compio/compio"
+features = [ "fs", "time", "macros" ]
+version = "0.20.0-beta.1"
+
+[[bench]]
+name = "wal_bench"
+harness = false

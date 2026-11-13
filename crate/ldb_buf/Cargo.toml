@@ -1,0 +1,74 @@
+[package]
+name = "ldb_buf"
+description = "ldb L3 layer crate: ldb_buf"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies]
+ldb_page = { version = "0.1.0", path = "../ldb_page" }
+log.workspace = true
+
+[dependencies.compio]
+version = "0.20.0-beta.1"
+path = "../../../../kv/compio/compio"
+
+[dependencies.futures-lite]
+workspace = true
+
+[dependencies.ldb_clock]
+version = "0.1.0"
+path = "../ldb_clock"
+
+[dependencies.ldb_free]
+version = "0.1.0"
+path = "../ldb_free"
+
+[dependencies.ldb_io]
+version = "0.1.0"
+path = "../ldb_io"
+
+[dependencies.ldb_pack]
+version = "0.1.0"
+path = "../ldb_pack"
+
+[dependencies.ldb_space]
+version = "0.1.0"
+path = "../ldb_space"
+
+[dependencies.ldb_sync]
+version = "0.1.0"
+path = "../ldb_sync"
+
+[dependencies.ldb_stat]
+version = "0.1.0"
+path = "../ldb_stat"
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[dependencies.ldb_vmem]
+version = "0.1.0"
+path = "../ldb_vmem"
+
+[dependencies.thiserror]
+workspace = true
+
+[dev-dependencies.compio]
+path = "../../../../kv/compio/compio"
+features = [ "fs", "time", "macros" ]
+version = "0.20.0-beta.1"
+
+[[bench]]
+name = "buf_bench"
+harness = false

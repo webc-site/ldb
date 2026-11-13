@@ -1,0 +1,17 @@
+[package]
+name = "ldb_epoch"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ldb L0 layer crate: ldb_epoch"
+
+[dependencies]
+parking_lot.workspace = true
+
+[dev-dependencies]
+criterion = "0.8.2"
+
+[[bench]]
+name = "epoch_bench"
+harness = false

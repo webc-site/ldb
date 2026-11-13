@@ -1,0 +1,42 @@
+[package]
+name = "ldb_gc"
+description = "ldb L3 layer crate: ldb_gc"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies]
+ldb_page = { version = "0.1.0", path = "../ldb_page" }
+
+[dependencies.fastrand]
+workspace = true
+
+[dependencies.gxhash]
+workspace = true
+
+[dependencies.ldb_space]
+version = "0.1.0"
+path = "../ldb_space"
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[dependencies.thiserror]
+workspace = true
+
+[dev-dependencies.futures-lite]
+workspace = true
+
+[[bench]]
+name = "gc_bench"
+harness = false

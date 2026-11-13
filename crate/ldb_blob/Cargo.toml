@@ -1,0 +1,44 @@
+[package]
+name = "ldb_blob"
+description = "ldb L4 layer crate: ldb_blob"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies.gxhash]
+workspace = true
+
+[dependencies.ldb_codec]
+version = "0.1.0"
+path = "../ldb_codec"
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[dependencies.parking_lot]
+workspace = true
+
+[dependencies.thiserror]
+workspace = true
+
+[dev-dependencies.compio]
+path = "../../../../kv/compio/compio"
+features = [ "fs", "time", "macros" ]
+version = "0.20.0-beta.1"
+
+[dev-dependencies.criterion]
+version = "0.8.2"
+
+[[bench]]
+name = "blob_bench"
+harness = false

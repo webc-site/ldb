@@ -1,0 +1,13 @@
+[term]
+quiet = true
+
+# 不绑定具体 CPU 微架构（无 target-cpu），保持发布二进制可在不同现代 CPU 上复用运行。
+# 启用现代 CPU 必备特性以支持 gxhash 编译期要求：
+#   x86_64：AES-NI + SSE2（Haswell+ / Zen1+ 标配）
+#   aarch64：AES + NEON（ARMv8 标配）
+[target.'cfg(target_arch = "x86_64")']
+rustflags = ["-C", "target-feature=+aes,+sse2"]
+
+[target.'cfg(target_arch = "aarch64")']
+rustflags = ["-C", "target-feature=+aes,+neon"]
+

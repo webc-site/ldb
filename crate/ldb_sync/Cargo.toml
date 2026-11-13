@@ -1,0 +1,35 @@
+[package]
+name = "ldb_sync"
+description = "ldb L1 layer crate: ldb_sync"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies.futures-lite]
+workspace = true
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[dependencies.thiserror]
+workspace = true
+
+[dev-dependencies.compio]
+path = "../../../../kv/compio/compio"
+default-features = false
+features = [ "runtime", "polling" ]
+version = "0.20.0-beta.1"
+
+[[bench]]
+name = "latch_bench"
+harness = false

@@ -1,0 +1,76 @@
+[workspace]
+resolver = "3"
+members = [
+"crate/ldb_type",
+"crate/ldb_simd",
+"crate/ldb_clock",
+"crate/ldb_epoch",
+"crate/ldb_range",
+"crate/ldb_pack",
+"crate/ldb_edt",
+"crate/ldb_zipf",
+"crate/ldb_sync",
+"crate/ldb_vmem",
+"crate/ldb_io",
+"crate/ldb_codec",
+"crate/ldb_page",
+"crate/ldb_node",
+"crate/ldb_stat",
+"crate/ldb_free",
+"crate/ldb_wal",
+"crate/ldb_space",
+"crate/ldb_gc",
+"crate/ldb_buf",
+"crate/ldb_tuple",
+"crate/ldb_btree",
+"crate/ldb_blob",
+"crate/ldb_txn",
+"crate/ldb_recovery",
+"crate/ldb",
+"crate/ldb_testkit",
+"crate/ldb_bench"
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+repository = ""
+
+[workspace.dependencies]
+thiserror = "2"
+gxhash = "3"
+fastrand = "2"
+memchr = "2"
+fearless_simd = "1"
+static_assertions = "1"
+crc32fast = "1"
+sha2 = "0.11"
+sonic-rs = "0.5"
+coarsetime = "0.1"
+log = "0.4"
+crossfire = "3"
+parking_lot = "0.13"
+roaring = "0.12"
+mzstd = "0.2"
+libc = "0.2"
+futures-lite = "2"
+log_init = "0.1"
+ctor = "1.0"
+
+  [workspace.dependencies.serde]
+  version = "1"
+  features = [ "derive" ]
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+overflow-checks = false
+
+[profile.bench]
+opt-level = 3
+lto = "fat"
+codegen-units = 1

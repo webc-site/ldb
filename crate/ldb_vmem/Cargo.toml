@@ -1,0 +1,32 @@
+[package]
+name = "ldb_vmem"
+description = "ldb L1 layer crate: ldb_vmem"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[target."cfg(unix)".dependencies]
+libc.workspace = true
+
+[target."cfg(windows)".dependencies]
+windows-sys = { version = "0.61.2", features = [
+  "Win32_System_Memory",
+  "Win32_System_SystemInformation",
+] }
+
+[[bench]]
+name = "arena_bench"
+harness = false

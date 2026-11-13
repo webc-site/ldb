@@ -1,0 +1,16 @@
+[package]
+name = "ldb_page"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ldb L2 layer crate: ldb_page"
+
+[dependencies]
+ldb_type = { version = "0.1.0", path = "../ldb_type" }
+static_assertions.workspace = true
+thiserror.workspace = true
+
+[[bench]]
+name = "page_bench"
+harness = false

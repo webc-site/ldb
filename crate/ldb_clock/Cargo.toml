@@ -1,0 +1,22 @@
+[package]
+name = "ldb_clock"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ldb L0 layer crate: ldb_clock"
+
+[dependencies]
+gxhash.workspace = true
+ldb_type = { version = "0.1.0", path = "../ldb_type" }
+
+[dev-dependencies]
+criterion = "0.8.2"
+
+[[bench]]
+name = "resident_set_bench"
+harness = false
+
+[[bench]]
+name = "map_differential"
+harness = false

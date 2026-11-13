@@ -1,0 +1,29 @@
+[package]
+name = "ldb_stat"
+description = "ldb L3 layer crate: ldb_stat"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies.serde]
+workspace = true
+features = [ "derive" ]
+
+[dependencies.sonic-rs]
+workspace = true
+
+[dependencies.thiserror]
+workspace = true
+
+[[bench]]
+name = "stat_bench"
+harness = false

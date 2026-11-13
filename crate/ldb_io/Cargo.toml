@@ -1,0 +1,37 @@
+[package]
+name = "ldb_io"
+description = "ldb L1 layer crate: ldb_io"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies.compio]
+version = "0.20.0-beta.1"
+path = "../../../../kv/compio/compio"
+features = [ "fs", "time", "macros", "polling" ]
+
+[dependencies.crc32fast]
+workspace = true
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[target.'cfg(unix)'.dependencies.libc]
+workspace = true
+
+[dependencies.log]
+workspace = true
+
+[[bench]]
+name = "io_bench"
+harness = false

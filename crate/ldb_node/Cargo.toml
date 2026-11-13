@@ -1,0 +1,21 @@
+[package]
+name = "ldb_node"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ldb L2 layer crate: ldb_node"
+
+[dependencies]
+ldb_page = { version = "0.1.0", path = "../ldb_page" }
+ldb_simd = { version = "0.1.0", path = "../ldb_simd" }
+ldb_type = { version = "0.1.0", path = "../ldb_type" }
+static_assertions.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+criterion = "0.8.2"
+
+[[bench]]
+name = "node_bench"
+harness = false

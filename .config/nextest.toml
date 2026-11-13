@@ -1,0 +1,10 @@
+# 压力测试（16 MiB 池强制驱逐 / 5x 容量 GC）需要更长超时：
+# 上游 30s/terminate-after=1 会误杀 §4.1 防线的压力用例。
+[profile.default]
+slow-timeout = { period = "60s", terminate-after = 3 }
+
+# 压力类测试串行执行 + 放宽超时（避免多协程压测互相挤占 CPU 触发误判）
+[[profile.default.overrides]]
+filter = 'test(stress|pressure|eviction|gc_)'
+threads-required = 1
+slow-timeout = { period = "180s", terminate-after = 3 }

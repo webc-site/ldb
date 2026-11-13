@@ -1,0 +1,53 @@
+[package]
+name = "ldb_space"
+description = "ldb L3 layer crate: ldb_space"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies]
+ldb_page = { version = "0.1.0", path = "../ldb_page" }
+
+[dependencies.fastrand]
+workspace = true
+
+[dependencies.gxhash]
+workspace = true
+
+[dependencies.ldb_codec]
+version = "0.1.0"
+path = "../ldb_codec"
+
+[dependencies.ldb_edt]
+version = "0.1.0"
+path = "../ldb_edt"
+
+[dependencies.ldb_io]
+version = "0.1.0"
+path = "../ldb_io"
+
+[dependencies.ldb_pack]
+version = "0.1.0"
+path = "../ldb_pack"
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[dependencies.parking_lot]
+workspace = true
+
+[dependencies.thiserror]
+workspace = true
+
+[dev-dependencies.futures-lite]
+workspace = true

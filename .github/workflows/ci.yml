@@ -1,0 +1,183 @@
+name: CI
+
+# 触发：main 分支 push、PR、手动。
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# 同一 ref 的新运行取消旧运行，避免重复占用 runner。
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # 本地 nightly 默认开启 fine-grained locking；CI 显式关闭，避免跨平台锁行为差异。
+  CARGO_UNSTABLE_FINE_GRAIN_LOCKING: "false"
+  # 清空潜在的外部 wrapper（sccache 等），保证构建可复现。
+  RUSTC_WRAPPER: ""
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: "1"
+
+# 注意（勿误以为漏配）：
+# - sh/ 是入库的 symlink，指向仓库外的绝对路径 ~/.local/share/cargo_sh；CI checkout 后是悬空链接。
+# - tool/ 不属于本仓库（git ls-files tool 为空）。
+# 因此 CI 不调用 sh/clippy.sh、sh/unused.js、tool/map.js verify，改用等价的直接 cargo 命令。
+# cargo-shear / fixrs / bun 只服务于上述脚本，CI 不需要安装。
+#
+# compio 是仓库外的 path 依赖（见 .github/actions/provide-compio/action.yml）。
+# 所有会触发 cargo manifest 解析的 job（test/clippy/fmt/cross-target）都必须先补齐它，
+# 否则即使只跑 `cargo fmt` 或 `cargo check -p ldb_simd` 也会在加载 workspace 时失败。
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          # ubuntu-latest 当前映射 Ubuntu 24.04 x64；官方已将 ubuntu-26.04-arm 转为 GA
+          # （actions/runner-images#14747），任务基线是 ubuntu-24.04-arm，按“用最新版”采用 26.04。
+          # 回退：把下一行换成 ubuntu-24.04-arm。
+          - ubuntu-26.04-arm
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      # 必须在任何 cargo 命令之前：fmt/check 都会解析 workspace manifest。
+      - name: Provide external compio path dependency
+        uses: ./.github/actions/provide-compio
+
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2.9.3
+        with:
+          cache-on-failure: true
+
+      - name: cargo check
+        shell: bash
+        run: cargo +stable check --workspace --all-targets --all-features
+
+      - name: Install cargo-nextest
+        uses: taiki-e/install-action@v2.90.3
+        with:
+          tool: cargo-nextest
+
+      - name: cargo nextest
+        shell: bash
+        run: cargo +stable nextest run --workspace --all-features
+
+  clippy:
+    name: clippy (${{ matrix.os }}) [advisory]
+    # advisory：既有 warning 待逐 crate 审查清零，见 target/crate-review/ci-round1.md §4.4；
+    # 清零后移除 continue-on-error，使 clippy 成为真实门禁。
+    # 拆成独立 job 的原因：check/nextest 的平台门禁不被既有 clippy 债拖红。
+    continue-on-error: true
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-26.04-arm
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Provide external compio path dependency
+        uses: ./.github/actions/provide-compio
+
+      # clippy 用 nightly（absolute_paths 等 lint 与本地验证保持一致）。
+      - name: Install nightly toolchain (clippy)
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: clippy
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2.9.3
+        with:
+          cache-on-failure: true
+
+      - name: "cargo clippy (advisory - existing warnings, see ci-round1.md §4.4)"
+        shell: bash
+        run: cargo +nightly clippy --workspace --all-targets --all-features -- -D warnings -W clippy::absolute_paths
+
+  fmt:
+    name: fmt (nightly rustfmt)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      # cargo fmt 也会解析 workspace manifest；缺 compio 时会在 fmt 前失败。
+      - name: Provide external compio path dependency
+        uses: ./.github/actions/provide-compio
+
+      # rustfmt.toml 含 unstable_features = true，必须用 nightly rustfmt。
+      - name: Install nightly toolchain (rustfmt)
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt
+
+      - name: cargo fmt --check
+        shell: bash
+        run: cargo +nightly fmt --all -- --check
+
+  cross-target:
+    name: cross-target (i686/s390x)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      # 即使只 check -p ldb_simd，cargo 仍会加载整个 workspace 的 manifest（含 compio path 依赖）。
+      - name: Provide external compio path dependency
+        uses: ./.github/actions/provide-compio
+
+      - name: Install stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2.9.3
+        with:
+          key: cross-target
+
+      # 32 位（i686）与大端（s390x）smoke test。
+      - name: Add cross targets
+        shell: bash
+        run: rustup target add i686-unknown-linux-gnu s390x-unknown-linux-gnu
+
+      # 只选 ldb_simd：其语义直接受位宽/字节序影响（SIMD mask 与标量 path），
+      # 且不依赖 compio / OS IO，交叉 check 快且失败信号明确。
+      - name: cargo check ldb_simd (i686, 32-bit)
+        shell: bash
+        run: cargo +stable check -p ldb_simd --target i686-unknown-linux-gnu
+
+      - name: cargo check ldb_simd (s390x, big-endian)
+        shell: bash
+        run: cargo +stable check -p ldb_simd --target s390x-unknown-linux-gnu

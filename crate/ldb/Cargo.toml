@@ -1,0 +1,88 @@
+[package]
+name = "ldb"
+description = "ldb L5 layer crate: ldb"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.license]
+workspace = true
+
+[package.repository]
+workspace = true
+
+[dependencies]
+coarsetime.workspace = true
+
+compio = { version = "0.20.0-beta.1", path = "../../../../kv/compio/compio", features = ["fs", "time", "macros"] }
+ldb_buf = { version = "0.1.0", path = "../ldb_buf" }
+ldb_gc = { version = "0.1.0", path = "../ldb_gc" }
+ldb_page = { version = "0.1.0", path = "../ldb_page" }
+log.workspace = true
+
+[dependencies.fastrand]
+workspace = true
+
+[dependencies.ldb_blob]
+version = "0.1.0"
+path = "../ldb_blob"
+
+[dependencies.ldb_btree]
+version = "0.1.0"
+path = "../ldb_btree"
+
+[dependencies.ldb_free]
+version = "0.1.0"
+path = "../ldb_free"
+
+[dependencies.ldb_io]
+version = "0.1.0"
+path = "../ldb_io"
+
+[dependencies.ldb_node]
+version = "0.1.0"
+path = "../ldb_node"
+
+[dependencies.ldb_space]
+version = "0.1.0"
+path = "../ldb_space"
+
+[dependencies.ldb_txn]
+version = "0.1.0"
+path = "../ldb_txn"
+
+[dependencies.ldb_type]
+version = "0.1.0"
+path = "../ldb_type"
+
+[dependencies.ldb_stat]
+version = "0.1.0"
+path = "../ldb_stat"
+
+[dependencies.ldb_vmem]
+version = "0.1.0"
+path = "../ldb_vmem"
+
+[dependencies.ldb_wal]
+version = "0.1.0"
+path = "../ldb_wal"
+
+[dependencies.parking_lot]
+workspace = true
+
+[dependencies.thiserror]
+workspace = true
+
+[dev-dependencies.compio]
+path = "../../../../kv/compio/compio"
+features = [ "fs", "time", "macros" ]
+version = "0.20.0-beta.1"
+
+[dev-dependencies.ctor]
+workspace = true
+
+[dev-dependencies.log_init]
+workspace = true

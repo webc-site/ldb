@@ -1,0 +1,36 @@
+name: Provide compio path dependency
+description: >-
+  克隆锁定 commit 的 compio 到 workspace 的 ../../kv/compio。
+  ldb 的 Cargo.toml 用仓库外 path 依赖引用 compio（本地在 ldb/../../kv/compio），
+  CI checkout 不含该目录，任何 cargo 命令（含 fmt / -p ldb_simd 的交叉 check）
+  都会在 manifest 解析阶段失败，因此所有需要 cargo 的 job 都要先执行本步骤。
+
+inputs:
+  repo:
+    description: compio git 仓库 URL
+    required: false
+    default: https://github.com/compio-rs/compio.git
+  rev:
+    description: compio commit SHA（与本地验证过的版本一致）
+    required: false
+    default: 94f295bf93def496cd3b220320437fcfad7e4969
+
+runs:
+  using: composite
+  steps:
+    - name: Clone pinned compio
+      shell: bash
+      env:
+        COMPIO_REPO: ${{ inputs.repo }}
+        COMPIO_REV: ${{ inputs.rev }}
+      run: |
+        set -euo pipefail
+        dest="$GITHUB_WORKSPACE/../../kv/compio"
+        mkdir -p "$(dirname "$dest")"
+        if [ ! -d "$dest/.git" ]; then
+          git init -q "$dest"
+          git -C "$dest" remote add origin "$COMPIO_REPO"
+          git -C "$dest" fetch --depth 1 origin "$COMPIO_REV"
+          git -C "$dest" checkout -q FETCH_HEAD
+        fi
+        test -f "$dest/compio/Cargo.toml"

@@ -1,0 +1,11 @@
+[package]
+name = "ldb_type"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ldb L0 layer crate: ldb_type"
+
+[dependencies]
+memchr.workspace = true
+thiserror.workspace = true

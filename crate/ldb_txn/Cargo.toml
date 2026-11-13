@@ -1,0 +1,26 @@
+[package]
+name = "ldb_txn"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "ldb L4 layer crate: ldb_txn"
+
+[dependencies]
+futures-lite.workspace = true
+ldb_page = { version = "0.1.0", path = "../ldb_page" }
+ldb_stat = { version = "0.1.0", path = "../ldb_stat" }
+ldb_type = { version = "0.1.0", path = "../ldb_type" }
+ldb_wal = { version = "0.1.0", path = "../ldb_wal" }
+log.workspace = true
+parking_lot.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+criterion = "0.8.2"
+futures-lite.workspace = true
+ldb_wal = { version = "0.1.0", path = "../ldb_wal" }
+
+[[bench]]
+name = "txn_bench"
+harness = false
